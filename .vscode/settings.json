@@ -1,0 +1,5 @@
+{
+    "html.format.unformatted": "",
+    "css.format.spaceAroundSelectorSeparator": true,
+    "css.format.braceStyle": "expand"
+}
