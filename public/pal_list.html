@@ -9,184 +9,184 @@
 
 
 <body>
-  <!-- import Vue before Element -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script>
-  <!-- import JavaScript -->
-  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <!-- <h1>Pal List</h1>
-  <ul id="palList"></ul> -->
-  <!-- <p>The result is: <%= results %> </p> -->
-  <!-- <el-row>
-    <el-col :span="24"><div class="grid-content bg-purple-dark">111</div></el-col>
-  </el-row> -->
-  <div id="productContainer">
+<!-- import Vue before Element -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- <h1>Pal List</h1>
+<ul id="palList"></ul> -->
+<!-- <p>The result is: <%= results %> </p> -->
+<!-- <el-row>
+  <el-col :span="24"><div class="grid-content bg-purple-dark">111</div></el-col>
+</el-row> -->
+<div id="productContainer">
+  <el-container>
+    <el-header style="background:rgb(92, 204, 230)">
+      <div>
+        <el-row>
+          <el-col :span="21">
+            <el-row>
+              <h1 class="title" style="color:rgb(247, 247, 247);margin: 5px;">Welcome to Huayi's Pal shop</h1>
+            </el-row>
+            <el-row>
+              <el-breadcrumb separator=">">
+                <el-breadcrumb-item :to="{ path: '/' }">Pal shop</el-breadcrumb-item>
+                <el-breadcrumb-item><a href="/">List of Pals</a></el-breadcrumb-item>
+              </el-breadcrumb>
+            </el-row>
+          </el-col>
+          <el-col :span="3">
+            <el-dropdown style="right: 10%;">
+              <el-button type="primary" style="margin-top: 10px;background-color: #7b99dd;">
+                Shopping Cart<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              {{shoppingcart}}
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="(quantity, product) in shoppingcart" :key="product">{{product}}-{{quantity}}</el-dropdown-item>
+                <!-- <el-dropdown-item>狮子头</el-dropdown-item>
+                <el-dropdown-item>螺蛳粉</el-dropdown-item>
+                <el-dropdown-item>双皮奶</el-dropdown-item>
+                <el-dropdown-item>蚵仔煎</el-dropdown-item> -->
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-col>
+        </el-row>
+        <!-- <p class="description">This is a sample webpage.</p> -->
+
+
+
+        <!-- <div id="tableContainer"></div>
+        <script src="../db_manage/showpaltable.js"></script> -->
+
+
+      </div>
+    </el-header>
     <el-container>
-      <el-header style="background:rgb(92, 204, 230)">
-        <div>
-          <el-row>
-            <el-col :span="21">
+      <el-aside width="200px" style="background:#d0eaf0">
+        <el-menu default-active="all" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                 background-color="#d0eaf0" text-color="#fff" @select="menuSelect" active-text-color="gray"
+                 style="font-weight: bold">
+          <el-menu-item index="all">
+            <i class="el-icon-menu"></i>
+            <span slot="title">All</span>
+          </el-menu-item>
+          <el-menu-item index="fire">
+            <i class="el-icon-magic-stick"></i>
+            <span slot="title">Fire</span>
+          </el-menu-item>
+          <el-menu-item index="water">
+            <i class="el-icon-moon-night"></i>
+            <span slot="title">Water</span>
+          </el-menu-item>
+          <el-menu-item index="grass">
+            <i class="el-icon-grape"></i>
+            <span slot="title">Grass</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main style="background:rgb(208, 234, 240);">
+
+        <el-card>
+          <el-row :gutter="20">
+            <el-col v-for="product in productList" :key="product.id" :span="6">
+              <el-row style="height: 200px;margin: 5px;"><el-image :src="product.image"></el-image></el-row>
               <el-row>
-                <h1 class="title" style="color:rgb(247, 247, 247);margin: 5px;">Welcome to Huayi's Pal shop</h1>
+                <el-card :body-style="{ padding: '5' }" style="height: 400px;margin-top:10px" shadow="hover">
+                  <div class="product">
+                    <!-- <div class="flip-container">
+                  <div class="flipper">
+                    <div class="front">
+                      <img :src="product.frontImg" alt="" class="img-fluid">
+                    </div>
+                    <div class="back">
+                      <img :src="product.backImg" alt="" class="img-fluid">
+                    </div>
+                  </div>
+                </div> -->
+                    <div class="text">
+
+                      <h3 style="margin: 5px;">{{ product.name }}</h3>
+                      <el-row>
+
+
+                        <el-col :span="6"><el-card :body-style="{ padding: '0' }">
+                          <p style="text-align: center">{{ product.category }}</p>
+                        </el-card></el-col>
+                        <el-col :span="6" style="margin-left: 10px;">
+                          <p class="price">${{ product.price }}</p>
+                        </el-col>
+
+                      </el-row>
+                      <p>{{ product.des }}</p>
+                      <p class="buttons">
+                        <el-button type="primary" @click="addToCart(product)"
+                                   style="position: absolute;bottom: 30px;right: 15%;">Add to Cart</el-button>
+                      </p>
+                    </div>
+                  </div>
+                </el-card>
               </el-row>
-              <el-row>
-                <el-breadcrumb separator=">">
-                  <el-breadcrumb-item :to="{ path: '/' }">Pal shop</el-breadcrumb-item>
-                  <el-breadcrumb-item><a href="/">List of Pals</a></el-breadcrumb-item>
-                </el-breadcrumb>
-              </el-row>
-            </el-col>
-            <el-col :span="3">
-              <el-dropdown style="right: 10%;">
-                <el-button type="primary" style="margin-top: 10px;background-color: #7b99dd;">
-                  Shopping Cart<i class="el-icon-arrow-down el-icon--right"></i>
-                </el-button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-for="(quantity, product) in shoppingcart" :key="product">{{product}}-{{quantity}}</el-dropdown-item>
-                  <!-- <el-dropdown-item>狮子头</el-dropdown-item>
-                  <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                  <el-dropdown-item>双皮奶</el-dropdown-item>
-                  <el-dropdown-item>蚵仔煎</el-dropdown-item> -->
-                </el-dropdown-menu>
-              </el-dropdown>
             </el-col>
           </el-row>
-          <!-- <p class="description">This is a sample webpage.</p> -->
-
-
-
-          <!-- <div id="tableContainer"></div>
-          <script src="../db_manage/showpaltable.js"></script> -->
-
-
-        </div>
-      </el-header>
-      <el-container>
-        <el-aside width="200px" style="background:#d0eaf0">
-          <el-menu default-active="all" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-            background-color="#d0eaf0" text-color="#fff" @select="menuSelect" active-text-color="gray"
-            style="font-weight: bold">
-            <el-menu-item index="all">
-              <i class="el-icon-menu"></i>
-              <span slot="title">All</span>
-            </el-menu-item>
-            <el-menu-item index="fire">
-              <i class="el-icon-magic-stick"></i>
-              <span slot="title">Fire</span>
-            </el-menu-item>
-            <el-menu-item index="water">
-              <i class="el-icon-moon-night"></i>
-              <span slot="title">Water</span>
-            </el-menu-item>
-            <el-menu-item index="grass">
-              <i class="el-icon-grape"></i>
-              <span slot="title">Grass</span>
-            </el-menu-item>
-          </el-menu>
-        </el-aside>
-        <el-main style="background:rgb(208, 234, 240);">
-
-          <el-card>
-            <el-row :gutter="20">
-              <el-col v-for="product in productList" :key="product.id" :span="6">
-                <el-row style="height: 200px;margin: 5px;"><el-image :src="product.image"></el-image></el-row>
-                <el-row>
-                  <el-card :body-style="{ padding: '5' }" style="height: 400px;margin-top:10px" shadow="hover">
-                    <div class="product">
-                      <!-- <div class="flip-container">
-                    <div class="flipper">
-                      <div class="front">
-                        <img :src="product.frontImg" alt="" class="img-fluid">
-                      </div>
-                      <div class="back">
-                        <img :src="product.backImg" alt="" class="img-fluid">
-                      </div>
-                    </div>
-                  </div> -->
-                      <div class="text">
-
-                        <h3 style="margin: 5px;">{{ product.name }}</h3>
-                        <el-row>
-
-
-                          <el-col :span="6"><el-card :body-style="{ padding: '0' }">
-                              <p style="text-align: center">{{ product.category }}</p>
-                            </el-card></el-col>
-                          <el-col :span="6" style="margin-left: 10px;">
-                            <p class="price">${{ product.price }}</p>
-                          </el-col>
-
-                        </el-row>
-                        <p>{{ product.des }}</p>
-                        <p class="buttons">
-                          <el-button type="primary" @click="addToCart(product)"
-                            style="position: absolute;bottom: 30px;right: 15%;">Add to Cart</el-button>
-                        </p>
-                      </div>
-                    </div>
-                  </el-card>
-                </el-row>
-              </el-col>
-            </el-row>
-          </el-card>
-        </el-main>
-      </el-container>
+        </el-card>
+      </el-main>
     </el-container>
-    <el-container>
-  </div>
-  <!-- <script src="/public/script.js"></script>
-  <div id="tableContainer"></div>
-  <div id="product-container" class="product"><div id="product-container-row" class="row"></div></div>
-  <script src="/public/script2.js"></script> -->
-  <script>
-    // import { reactive } from 'vue';
-    new Vue({
-      el: '#productContainer',
-      data() {
-        return {
-          productList: [],
-          shoppingcart:{} 
-        };
-      },
-      created() {
-        axios.get('/pals')
-          .then(response => {
-            console.log("response", response)
-            this.productList = response.data;
-          })
-          .catch(error => {
-            console.error('Error fetching product list:', error);
-          });
-      },
-      methods: {
-        menuSelect(val) {
-          console.log("value", val)
-          window.location.href = `./public/${val}.html`;
-          // axios.get('/')
-        },
-        handleOpen(key, keyPath) {
-          console.log(key, keyPath);
-        },
-        handleClose(key, keyPath) {
-          console.log(key, keyPath);
-        },
-        addToCart(product) {
-          // Implement your add to cart functionality here
-          console.log('Adding to cart:', product);
-          if(this.shoppingcart.hasOwnProperty(product.name)){
-            this.shoppingcart[product.name]+=1
-          }else{
-            this.shoppingcart[product.name]=1
+  </el-container>
+  <el-container>
+</div>
+<!-- <script src="/public/script.js"></script>
+<div id="tableContainer"></div>
+<div id="product-container" class="product"><div id="product-container-row" class="row"></div></div>
+<script src="/public/script2.js"></script> -->
+<script>
+  // import { reactive } from 'vue';
+  new Vue({
+            el: '#productContainer',
+            data() {
+              return {
+                productList: [],
+                shoppingcart:{}
+              };
+            },
+            created() {
+              axios.get('/pals')
+                      .then(response => {
+                        console.log("response", response)
+                        this.productList = response.data;
+                      })
+                      .catch(error => {
+                        console.error('Error fetching product list:', error);
+                      });
+            },
+            methods: {
+              menuSelect(val) {
+                console.log("value", val)
+                window.location.href = `./public/${val}.html`;
+                // axios.get('/')
+              },
+              handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+              },
+              handleClose(key, keyPath) {
+                console.log(key, keyPath);
+              },
+              addToCart(product) {
+                // Implement your add to cart functionality here
+                if(this.shoppingcart.hasOwnProperty(product.name)){
+                  this.shoppingcart[product.name] += 1
+                }else{
+                  Vue.set(this.shoppingcart, product.name, 1)
+                }
+                // shoppingcart.push(product.pid);
+                console.log(this.shoppingcart)
+              }
+            }
           }
-          // shoppingcart.push(product.pid);
-          console.log(this.shoppingcart)
-        }
-      }
-    }
-    )
+  )
 
 
-  </script>
+</script>
 </body>
 
 </html>
