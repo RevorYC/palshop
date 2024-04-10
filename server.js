@@ -10,7 +10,7 @@ const db = getDb();
 const ejs = require('ejs');
 
 const connection = mysql.createConnection({
-  host: '13.239.179.69',     // 数据库主机名
+  host: 'localhost',     // 数据库主机名
   user: 'pal_db', // 数据库用户名
   password: 'li12345780', // 数据库密码
   database: 'pal_db'  // 数据库名称
