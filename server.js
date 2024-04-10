@@ -32,6 +32,7 @@ app.get('/', function (req, res) {
    res.send('Hello World');
 })
 
+
 app.get('/index', function (req, res) {
     res.sendFile( __dirname + "/" + "public/index.html" );
  })
