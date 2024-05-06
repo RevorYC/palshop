@@ -1,7 +1,7 @@
 
 const mysql = require('mysql');
 const fs = require("fs");
-const getDb = require("./dbUtil");
+const getDb = require("./dbUtilAsync");
 const db = getDb();
  
 const jsonFilePath = 'public/testingjson.json';

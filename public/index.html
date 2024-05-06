@@ -1,10 +1,224 @@
+<!DOCTYPE html>
 <html>
-<body>
-<form action="http://127.0.0.1:8081/process_post" method="POST">
-First Name: <input type="text" name="first_name">  <br>
+<head>
+    <title>Huayi's Pal Shop</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="..\css\element_styles.css">
+<!--    <meta http-equiv="Content-Security-Policy" content="style-src 'self' unpkg.com">-->
+</head>
 
-Last Name: <input type="text" name="last_name">
-<input type="submit" value="Submit">
-</form>
+
+<body>
+<!-- import Vue before Element -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- <h1>Pal List</h1>
+<ul id="palList"></ul> -->
+<!-- <p>The result is: <%= results %> </p> -->
+<!-- <el-row>
+  <el-col :span="24"><div class="grid-content bg-purple-dark">111</div></el-col>
+</el-row> -->
+<div id="regContainer">
+    <div>
+        <!--        <h1 class="title">Welcome to Huayi's Pal shop</h1>-->
+        <el-header style="background:rgb(92, 204, 230);height: 70px">
+
+            <el-row>
+                <h1 class="title"
+                    style="color:rgb(247, 247, 247);margin: 5px;display: flex;justify-content: center;align-items: center;">
+                    Welcome to Huayi's Pal Shop!</h1>
+            </el-row>
+
+        </el-header>
+        <!-- <p class="description">This is a sample webpage.</p> -->
+
+
+        <!-- <div id="tableContainer"></div>
+        <script src="../db_manage/showpaltable.js"></script> -->
+
+    </div>
+
+    <!-- <el-aside width="200px">Aside</el-aside> -->
+    <!-- </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12"><div class="grid-content bg-purple">111</div></el-col>
+        <el-col :span="12"><div class="grid-content bg-purple-light">222</div></el-col>
+      </el-row> -->
+    <!-- <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+    </el-breadcrumb> -->
+    <!-- <el-row>
+    <el-col :span="4">
+      <nav>
+      <ul class="horizontal-menu">
+        <li><a href="../elements/fire.html" class="thiselement">Fire</a></li>
+        <li><a href="../elements/water.html">Water</a></li>
+      </ul>
+    </nav>
+  </el-col>
+    </el-row> -->
+
+    <el-main margin="10" style="display: flex;justify-content: center;align-items: center;height: 100vh;">
+
+        <el-card>
+            <el-form ref="form" :model="userform" label-width="100px">
+                <el-form-item label="User Name" prop="name">
+                    <el-input v-model="userform.username"></el-input>
+                </el-form-item>
+                <el-form-item label="Password" prop="name">
+                    <el-input v-model="userform.userpwd"></el-input>
+                </el-form-item>
+                <!--                <el-form-item label="Pal Price" prop="price">-->
+                <!--                    <el-input-number v-model="form.price" :step="0.01" required></el-input-number>-->
+                <!--                </el-form-item>-->
+                <!--                <el-form-item label="Pal Type" prop="category">-->
+                <!--                    <el-select v-model="form.category" placeholder="Select Type" required>-->
+                <!--                        <el-option label="Fire" value="1"></el-option>-->
+                <!--                        <el-option label="Water" value="2"></el-option>-->
+                <!--                        <el-option label="Grass" value="3"></el-option>-->
+                <!--                    </el-select>-->
+                <!--                </el-form-item>-->
+                <!--                <el-form-item label="Description" prop="description">-->
+                <!--                    <el-input v-model="form.description" type="textarea" required></el-input>-->
+                <!--                </el-form-item>-->
+                <!--                <el-form-item label="Pal Image" prop="image">-->
+                <!--                    <el-upload-->
+                <!--                            action="/upload"-->
+                <!--                            name="image"-->
+                <!--                            :show-file-list="false"-->
+                <!--                            :before-upload="handleBeforeUpload"-->
+                <!--                            :on-success="handleUploadSuccess"-->
+                <!--                            :on-error="handleUploadError"-->
+                <!--                            required-->
+                <!--                            list-type="picture"-->
+                <!--                    >-->
+                <!--                        <el-button icon="el-icon-upload2">Upload Image</el-button>-->
+                <!--                    </el-upload>-->
+                <!--                </el-form-item>-->
+                <!--                <el-form-item>-->
+
+                <!--                    <el-image :src="form.image"></el-image>-->
+                <!--                </el-form-item>-->
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item>
+                            <el-button type="primary" @click="signIn">Sign In</el-button>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item>
+                            <el-button type="primary" @click="signUp">Sign Up</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+
+            <!--            <button id="myButton">Click Me</button>-->
+        </el-card>
+
+    </el-main>
+</div>
+
+
+<script>
+    function blobToBase64(blob, callback) {
+        const reader = new FileReader();
+        // 读取完成后触发事件
+        reader.onloadend = function () {
+            const base64String = reader.result.split(',')[1];
+            const mimeType = blob.type;
+            const base64WithProtocol = `data:${mimeType};base64,${base64String}`;
+            callback(base64WithProtocol);
+        };
+        // 开始读取 Blob 对象
+        reader.readAsDataURL(blob);
+    }
+
+    new Vue({
+            el: '#regContainer',
+            data() {
+                return {
+                    userform: {
+                        username: "",
+                        userpwd: ""
+                    },
+                    base64: ""
+                };
+            },
+            methods: {
+                signIn(){
+                    axios.post("/signin", {
+                        username:this.userform.username,
+                        userpwd:this.userform.userpwd
+
+                    }).then((res) => {
+                        if(res.data==="success"){
+                            window.location.href = "pal_list.html";
+                        }else{
+                            ELEMENT.Message({
+                                message: res.data,
+                                type: 'error'
+                            });
+                        }
+                    });
+                },
+                signUp(){
+
+                },
+                handleBeforeUpload(file) {
+                    console.log(file);
+                    blobToBase64(file, (base64) => {
+                        console.log("base64", base64)
+                        this.form.image = base64;
+                    })
+                    return false;
+
+                    // 处理文件上传之前的操作，如文件类型、大小等验证
+                },
+                handleUploadSuccess(response, file) {
+                    // 处理文件上传成功的操作
+                    console.log("response, file", response, file)
+                },
+                handleUploadError(error) {
+                    // 处理文件上传失败的操作
+                },
+                submitForm() {
+                    const categoryMap = {
+                        '1': "Fire",
+                        '2': "Water",
+                        '3': "Grass"
+                    }
+                    axios.post("/additem", {
+                        price: this.form.price,
+                        name: this.form.name,
+                        des: this.form.description,
+                        image: this.form.image,
+                        category: categoryMap[this.form.category],
+                        catid: this.form.category
+                    }).then((res) => {
+
+                        console.log("res", res)
+                    });
+                    // this.$refs.form.validate(valid => {
+                    //   if (valid) {
+                    //     // 表单验证通过，执行提交操作
+                    //     // 发起 POST 请求将表单数据提交到服务器
+                    //   } else {
+                    //     // 表单验证不通过，进行错误处理或给出提示
+                    //   }
+                    // });
+                }
+            }
+        }
+    )
+</script>
+
+
+</el-col>
+</el-main>
+</el-container>
 </body>
 </html>

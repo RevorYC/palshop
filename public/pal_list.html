@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Pal List</title>
+  <title>Huayi's Pal Shop</title>
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   <link rel="stylesheet" href="..\css\element_styles.css">
 </head>
@@ -41,9 +41,10 @@
               <el-button type="primary" style="margin-top: 10px;background-color: #7b99dd;">
                 Shopping Cart<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
-              {{shoppingcart}}
+<!--              {{shoppingcart}}-->
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="(quantity, product) in shoppingcart" :key="product">{{product}}-{{quantity}}</el-dropdown-item>
+                <el-dropdown-item v-if="shoppingcart" v-for="(quantity, product) in shoppingcart" :key="product">{{product}}-{{quantity}}</el-dropdown-item>
+<!--                <el-dropdown-item >狮子头</el-dropdown-item>-->
                 <!-- <el-dropdown-item>狮子头</el-dropdown-item>
                 <el-dropdown-item>螺蛳粉</el-dropdown-item>
                 <el-dropdown-item>双皮奶</el-dropdown-item>
@@ -133,20 +134,25 @@
       </el-main>
     </el-container>
   </el-container>
-  <el-container>
+
 </div>
+
 <!-- <script src="/public/script.js"></script>
 <div id="tableContainer"></div>
 <div id="product-container" class="product"><div id="product-container-row" class="row"></div></div>
 <script src="/public/script2.js"></script> -->
+<script src="/public/script2.js"></script>
 <script>
   // import { reactive } from 'vue';
+
   new Vue({
             el: '#productContainer',
             data() {
               return {
                 productList: [],
-                shoppingcart:{}
+                shoppingcart:{
+                  "Please Add Product":"no products"
+                }
               };
             },
             created() {
@@ -173,6 +179,9 @@
               },
               addToCart(product) {
                 // Implement your add to cart functionality here
+                if(this.shoppingcart.hasOwnProperty("Please Add Product")){
+                  delete this.shoppingcart["Please Add Product"]
+                }
                 if(this.shoppingcart.hasOwnProperty(product.name)){
                   this.shoppingcart[product.name] += 1
                 }else{
